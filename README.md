@@ -9,6 +9,10 @@ Helm is a package managher for Kubernetes. Helm helps you manage Kubernetes appl
 
 A chart is a Helm package and collection of YAML files that describe Kubernetes resources. It contains all the configuration to run an application or service.
 
+#### Manifest
+
+A manifest is a YAML-encoded representation of the Kubernetes resources that were generated from a release's chart.
+
 #### Release
 
 A release is an instance of a Helm chart running in a cluster. Installing a chart into a cluster will create a release.
@@ -47,7 +51,17 @@ Delete the installation and rollback on failure. Useful for continuous integrati
 
 ##### --dry-run
 
-Simulate an install. Load the chart, parse values.yaml, generate manifest and parse YAML kubernetes object for validation. Does not send kubernetes objects to kubernetes. Useful for debugging manifests.
+Simulate an install. Load the chart, parse values.yaml, generate manifest and parse YAML Kubernetes object for validation. Does not send Kubernetes objects to Kubernetes. Useful for debugging manifests.
+
+#### helm get manifest
+
+Fetches the generated manifest for a given release at the time of deployment.
+
+`helm get manifest [RELEASE NAME]`
+
+`kubectl` can be used to fetch what is in Kubernetes at the present time.
+
+Example: `kubectl get deployments [DEPLOYMENT NAME] -o yaml`
 
 #### helm create
 
@@ -55,15 +69,35 @@ Create a new chart with a specified name (creates an NGINX chart by default).
 
 `helm create [CHART NAME]`
 
-#### helm template
-
-Locally render template. Does not send kubernetes objects to kubernetes or parse for validation. Useful for reviewing template and debugging syntatical errors.
+#### helm lint
 
 `helm template [PATH TO CHART DIRECTORY]`
 
+Runs a series of tests to verify that the chart is well-formed. Examine a chart for possible issues.
+
+#### helm template
+
+Locally render template. Does not send Kubernetes objects to Kubernetes or parse for validation. Useful for reviewing template and debugging syntatical errors.
+
+`helm template [PATH TO CHART DIRECTORY]`
+
+#### helm upgrade
+
+Upgrade a release with a new version of a chart.
+
+`helm upgrade [RELEASE NAME]'
+
+##### --install
+
+If a release by this name doesn't already exist, install first. Useful for continuous integration and continuous deployment as a package will first be installed.
+
+##### --cleanup-on-failure
+
+Delete new resources created in this upgrade when upgrade fails. Can hinder debugging when an upgrade fails.
+
 #### helm uninstall
 
-`helm uninstall [RELEASE NAME]`
+`helm uninstall [RELEASE NAME]'
 
 ##### --keep-history
 
