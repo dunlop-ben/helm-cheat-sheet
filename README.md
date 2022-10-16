@@ -167,7 +167,7 @@ Download a specified chart from a repository.
 
 Package a chart directory into a chart archive (creates a `tgz` file).
 
-The name of the archived chart is derived from the `name` property in the Chart.yaml file.
+The name of the archived chart is derived from the `name` property in the 'Chart.yaml' file.
 
 `helm package [PATH]`
 
