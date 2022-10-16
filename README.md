@@ -3,7 +3,7 @@
 Helm is a package managher for Kubernetes. Helm helps you manage Kubernetes applications — Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.
 
 
-## Terminology
+## Terminology and Concepts
 
 #### Chart
 
@@ -16,6 +16,12 @@ A manifest is a YAML-encoded representation of the Kubernetes resources that wer
 #### Release
 
 A release is an instance of a Helm chart running in a cluster. Installing a chart into a cluster will create a release.
+
+#### Dependencies
+
+Helm chart dependencies are used to install other charts’ resources that a Helm chart may depend on. Helm charts store their dependencies in 'charts/'. For chart developers, it is often easier to manage dependencies in 'Chart.yaml' which declares all dependencies.
+
+The dependency commands operate on that file, making it easy to synchronize between the desired dependencies and the actual dependencies stored in the 'charts/' directory.
 
 ## Helm Commands
 
@@ -32,7 +38,9 @@ Example: `helm list -n foo`
 Install a package (Helm chart).
 
 `helm install [RELEASE NAME] [REPOSITORY NAME]/[CHART NAME]`
+
 `helm install [RELEASE NAME] [PATH TO CHART DIRECTORY]`
+
 `helm install [RELEASE NAME] .` Command when executing from within the chart directory
 
 To override values in a chart, use either the '--values' flag and pass in a file or use the '--set' flag and pass configuration from the command line.
@@ -51,7 +59,7 @@ Delete the installation and rollback on failure. Useful for continuous integrati
 
 ##### --dry-run
 
-Simulate an install. Load the chart, parse values.yaml, generate manifest and parse YAML Kubernetes object for validation. Does not send Kubernetes objects to Kubernetes. Useful for debugging manifests.
+Simulate an install. Load the chart, parse 'values.yaml', generate manifest and parse YAML Kubernetes object for validation. Does not send Kubernetes objects to Kubernetes. Useful for debugging manifests.
 
 #### helm get manifest
 
@@ -62,6 +70,12 @@ Fetches the generated manifest for a given release at the time of deployment.
 `kubectl` can be used to fetch what is in Kubernetes at the present time.
 
 Example: `kubectl get deployments [DEPLOYMENT NAME] -o yaml`
+
+#### helm get values
+
+Fetches the values for a given release at the time of deployment.
+
+`helm get values [RELEASE NAME]`
 
 #### helm create
 
@@ -80,6 +94,14 @@ Runs a series of tests to verify that the chart is well-formed. Examine a chart 
 Locally render template. Does not send Kubernetes objects to Kubernetes or parse for validation. Useful for reviewing template and debugging syntatical errors.
 
 `helm template [PATH TO CHART DIRECTORY]`
+
+#### helm dependency update
+
+Update `charts/` based on the contents of `Chart.yaml`.
+
+`helm dependency update [PATH TO CHART DIRECTORY]`
+
+The command autogenerates a lock file lists the exact versions of immediate dependencies and their dependencies and their dependencies.
 
 #### helm upgrade
 
@@ -105,7 +127,7 @@ Remove all associated resources and mark the release as deleted, but retain the 
 
 ## Repositories
 
-A chart repository is a web server that houses packaged charts which can be discovered and shared. A chart repository includes an `index.html` file that contains information about each chart in a repository.
+A chart repository is a web server that houses packaged charts which can be discovered and shared. A chart repository includes an 'index.html' file that contains information about each chart in a repository.
 
 #### helm repo add
 
@@ -155,4 +177,4 @@ A chart can be packaged and written to a specified local destination.
 
 #### .helmignore
 
-The .helmignore file is used to specify files that should not be packaged with a chart.
+The '.helmignore' file is used to specify files that should not be packaged with a chart.
