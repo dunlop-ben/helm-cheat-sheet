@@ -1,6 +1,6 @@
 # What is Helm?
 
-Helm is a package managher for Kubernetes. Helm helps you manage Kubernetes applications — Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.
+Helm is a package managher for Kubernetes. Helm helps you manage Kubernetes applications — Helm charts help you define, install, and upgrade even the most complex Kubernetes application.
 
 
 ## Terminology and Concepts
@@ -8,6 +8,12 @@ Helm is a package managher for Kubernetes. Helm helps you manage Kubernetes appl
 #### Chart
 
 A chart is a Helm package and collection of YAML files that describe Kubernetes resources. It contains all the configuration to run an application or service.
+
+#### Starters
+
+Helm starters are used by the `helm create` command to customize the default chart — by default Helm uses an NGINX chart as the default chart.
+
+As chart author you may author charts that are specifically designed to be used as starters.
 
 #### Manifest
 
@@ -82,6 +88,22 @@ Fetches the values for a given release at the time of deployment.
 Create a new chart with a specified name (creates an NGINX chart by default).
 
 `helm create [CHART NAME]`
+
+##### --starter
+
+Option that lets you specify a starter chart.
+
+`helm create --starter [NAME OF STARTER] [NAME OF CHART]`
+
+Starter charts should be stored in a specific local directory.
+
+Run `helm env HELM_DATA_HOME` to return the directory to store starter charts.
+
+Starter charts should be designed with the following considerations in mind:
+
+* The 'Chart.yaml' will be overwritten by the generator and specified chart name. The `name` property in 'Chart.yaml' file does not need to be parameterized. It will be overrriden when executing the `helm create` command.
+* Users will expect to modify such a chart's contents, so documentation should indicate how users can do so.
+* All occurrences of <CHARTNAME> will be replaced with the specified chart name so that starter charts can be used as templates.
 
 #### helm lint
 
@@ -165,7 +187,7 @@ Download a specified chart from a repository.
 
 #### helm package
 
-Package a chart directory into a chart archive (creates a `tgz` file).
+Package a chart directory into a chart archive (creates a 'tgz' file).
 
 The name of the archived chart is derived from the `name` property in the 'Chart.yaml' file.
 
